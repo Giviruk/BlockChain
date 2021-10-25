@@ -1,0 +1,83 @@
+﻿@model IndexModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    @using (Html.BeginForm("CreateBlock", "Home", FormMethod.Post))
+    {
+        @Html.TextBox("data", "input data")
+        <input type="submit" value="Create">
+    }
+
+    <input type="submit" onclick="location.href='@Url.Action("VerifiedAll", "Home")'" value="Проверить всю цепь">
+    <input type="submit" onclick="location.href='@Url.Action("GenerateKeys", "Home")'" value="Сгенерировать ключи">
+    <div class="container">
+        <div class="row">
+            <div class="col-1-3">
+                <label style="word-break: break-all">Private key: </label>
+            </div>
+            <div class="col-2-3">
+                <label style="word-break: break-all">@Model.PrivateKey</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-1-3">
+                <label style="word-break: break-all">Public key: </label>
+            </div>
+            <div class="col-2-3">
+                <label style="word-break: break-all">@Model.PublicKey</label>
+            </div>
+        </div>
+    </div>
+
+    <table border="1px" width="100%" cellpadding="5px"  table-layout="fixed">
+        <div class="container">
+            <div class="row">
+
+                @foreach (var block in Model.Blocks)
+                {
+                    <div class="col-2-3">
+                        <tr>
+                            <td style="width: 15%">Block number: </td>
+                            <td style="width: 85%">
+                                <label>@block.BlockNumber</label>
+                            </td>
+                            <td>
+                                <input type="submit" onclick="location.href='@Url.Action("VerifyBlock", "Home", @block)'" value="Проверить">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 15%">Block data: </td>
+                            <td style="width: 85%">
+                                <label>@block.Data</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 15%">Block hash: </td>
+                            <td style="width: 85%">
+                                <label>@block.Hash</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 15%">Block signature: </td>
+                            <td style="width: 85%">
+                                <label>@block.Signature</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 15%">Verified status: </td>
+                            <td style="width: 85%">
+                                <label>@block.Verified</label>
+                            </td>
+                        </tr>
+                        <tr style="height: 50px"><td></td><td></td><td></td></tr>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </table>
+</div>
